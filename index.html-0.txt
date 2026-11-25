@@ -1,0 +1,1837 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>LegaMinda — Game Santai, Ilmu Sampai, Stres Hilang</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #1e293b;
+      --card: rgba(30, 41, 59, 0.85);
+      --card-border: rgba(148, 163, 184, 0.16);
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #5eead4;
+      --accent-2: #a78bfa;
+      --warm: #fbbf24;
+      --danger: #fb7185;
+      --success: #34d399;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --radius: 20px;
+    }
+
+    body.theme-matcha {
+      --bg: #0e1914;
+      --bg-soft: #172a21;
+      --card: rgba(23, 42, 33, 0.88);
+      --card-border: rgba(134, 239, 172, 0.16);
+      --accent: #86efac;
+      --accent-2: #fcd34d;
+    }
+
+    body.theme-dusk {
+      --bg: #181124;
+      --bg-soft: #261b38;
+      --card: rgba(38, 27, 56, 0.88);
+      --card-border: rgba(251, 182, 206, 0.16);
+      --accent: #fda4af;
+      --accent-2: #c4b5fd;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background: radial-gradient(circle at top right, rgba(94, 234, 212, 0.08), transparent 45%),
+                  radial-gradient(circle at bottom left, rgba(167, 139, 250, 0.08), transparent 45%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 88px;
+      transition: background 0.4s ease, color 0.3s ease;
+    }
+
+    .app-shell {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 16px 16px 24px;
+    }
+
+    /* Header */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 10px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #0f172a;
+      font-weight: 800;
+      box-shadow: 0 4px 14px rgba(94, 234, 212, 0.25);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pro-pill {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #1e1b4b;
+      text-transform: uppercase;
+      display: none;
+    }
+
+    .pro-pill.active { display: inline-block; }
+
+    .brand p {
+      margin: 2px 0 0;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: transform 0.15s ease, border-color 0.2s;
+    }
+
+    .icon-btn:active { transform: scale(0.95); }
+
+    .btn-pro-cta {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #1e1b4b;
+      border: none;
+    }
+
+    /* Stats Banner */
+    .stats-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+      backdrop-filter: blur(12px);
+    }
+
+    .stats-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .level-badge {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .streak-pill {
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(251, 191, 36, 0.14);
+      color: var(--warm);
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(251, 191, 36, 0.25);
+    }
+
+    .progress-track {
+      height: 8px;
+      background: rgba(148, 163, 184, 0.18);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: 999px;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    .stats-sub {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 7px;
+    }
+
+    /* Mood Check-in */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mood-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .mood-btn {
+      background: rgba(15, 23, 42, 0.45);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 10px 4px;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      transition: all 0.2s ease;
+    }
+
+    .mood-btn span.emoji { font-size: 20px; }
+    .mood-btn.selected {
+      border-color: var(--accent);
+      background: rgba(94, 234, 212, 0.14);
+      transform: translateY(-2px);
+    }
+
+    /* Game Hub Grid */
+    .hub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .game-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 14px;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.18s ease, border-color 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 146px;
+    }
+
+    .game-card:hover { border-color: rgba(94, 234, 212, 0.45); }
+    .game-card:active { transform: scale(0.97); }
+
+    .game-icon {
+      font-size: 26px;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+
+    .game-tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 3px 7px;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+
+    .tag-free {
+      background: rgba(52, 211, 153, 0.16);
+      color: var(--success);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    .tag-pro {
+      background: rgba(251, 191, 36, 0.16);
+      color: var(--warm);
+      border: 1px solid rgba(251, 191, 36, 0.35);
+    }
+
+    .game-card h3 {
+      margin: 0 0 4px;
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .game-card p {
+      margin: 0;
+      font-size: 11.5px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    /* Views */
+    .view { display: none; animation: fadeIn 0.25s ease; }
+    .view.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 13px 16px;
+      border-radius: 14px;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.2s;
+    }
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #0f172a;
+    }
+
+    .btn-secondary {
+      background: rgba(148, 163, 184, 0.14);
+      color: var(--text);
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #1e1b4b;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0 0 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Breathing & Shredder */
+    .breath-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 18px 0;
+    }
+
+    .breath-circle {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(94, 234, 212, 0.35), rgba(167, 139, 250, 0.18));
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 14px;
+      box-shadow: 0 0 35px rgba(94, 234, 212, 0.2);
+      transition: transform 4s ease-in-out, box-shadow 4s ease-in-out;
+    }
+
+    .breath-circle.inhale {
+      transform: scale(1.26);
+      box-shadow: 0 0 55px rgba(94, 234, 212, 0.45);
+    }
+
+    .breath-circle.hold {
+      transform: scale(1.26);
+    }
+
+    .breath-circle.exhale {
+      transform: scale(0.92);
+      box-shadow: 0 0 18px rgba(167, 139, 250, 0.2);
+    }
+
+    .shred-input {
+      width: 100%;
+      min-height: 76px;
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13.5px;
+      resize: none;
+      margin-bottom: 10px;
+      transition: all 0.8s ease;
+    }
+
+    .shred-input.dissolving {
+      opacity: 0;
+      transform: translateY(-28px) scale(0.88);
+      filter: blur(8px);
+    }
+
+    /* Quiz / Learning UI */
+    .quiz-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .quiz-question {
+      font-size: 15.5px;
+      font-weight: 700;
+      line-height: 1.45;
+      margin: 0 0 14px;
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 13px 14px;
+      border-radius: 14px;
+      margin-bottom: 9px;
+      font-size: 13.5px;
+      line-height: 1.35;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .option-btn:hover { border-color: var(--accent); }
+    .option-btn.correct {
+      background: rgba(52, 211, 153, 0.18);
+      border-color: var(--success);
+      color: #d1fae5;
+    }
+    .option-btn.wrong {
+      background: rgba(251, 113, 133, 0.16);
+      border-color: var(--danger);
+      color: #ffe4e6;
+    }
+
+    .insight-box {
+      background: rgba(94, 234, 212, 0.09);
+      border: 1px solid rgba(94, 234, 212, 0.25);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.45;
+      margin: 12px 0;
+      display: none;
+    }
+
+    /* Zen Memory Grid */
+    .zen-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      max-width: 280px;
+      margin: 16px auto;
+    }
+
+    .zen-tile {
+      aspect-ratio: 1;
+      border-radius: 16px;
+      background: rgba(148, 163, 184, 0.14);
+      border: 1px solid var(--card-border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .zen-tile.lit {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 22px rgba(94, 234, 212, 0.55);
+      transform: scale(0.96);
+    }
+
+    /* RPG Meters */
+    .meter-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .meter-box {
+      background: rgba(15, 23, 42, 0.45);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 8px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .meter-val {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+
+    /* Sound Mixer */
+    .sound-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .sound-row:last-child { border-bottom: none; }
+
+    .sound-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    /* Badges & Themes */
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .badge-item {
+      background: rgba(15, 23, 42, 0.45);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px;
+      opacity: 0.45;
+      transition: opacity 0.3s;
+    }
+
+    .badge-item.unlocked {
+      opacity: 1;
+      border-color: rgba(94, 234, 212, 0.4);
+      background: rgba(94, 234, 212, 0.08);
+    }
+
+    .theme-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .theme-btn {
+      padding: 10px 8px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      background: rgba(15, 23, 42, 0.45);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .theme-btn.active {
+      border-color: var(--accent);
+      background: rgba(94, 234, 212, 0.14);
+    }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 8px 14px;
+      z-index: 50;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      min-width: 68px;
+    }
+
+    .nav-btn span.nav-ico { font-size: 19px; }
+    .nav-btn.active { color: var(--accent); }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.78);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal-box {
+      background: var(--bg-soft);
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      border-radius: 24px;
+      padding: 20px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .pro-list {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0 16px;
+    }
+
+    .pro-list li {
+      font-size: 13px;
+      padding: 6px 0;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      color: #e2e8f0;
+    }
+
+    .code-input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .toast {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-80px);
+      background: #10b981;
+      color: #052e16;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      z-index: 200;
+      transition: transform 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--card-border);
+      font-size: 12.5px;
+    }
+    .history-item:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+
+<div class="app-shell">
+  <!-- Header -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logo">🌿</div>
+      <div>
+        <h1>LegaMinda <span id="proPill" class="pro-pill">PRO</span></h1>
+        <p id="brandTagline">Main Santai, Ilmu Sampai, Stres Hilang</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" id="langToggle" onclick="toggleLang()">EN</button>
+      <button class="icon-btn btn-pro-cta" id="headerProBtn" onclick="openProModal()">⭐ PRO</button>
+    </div>
+  </header>
+
+  <!-- HOME VIEW -->
+  <section id="view-home" class="view active">
+    <!-- Gamification Stats -->
+    <div class="stats-card">
+      <div class="stats-row">
+        <div class="level-badge" id="levelDisplay">Tahap 1 • Pencari Tenang</div>
+        <div class="streak-pill" id="streakDisplay">🔥 1 Hari</div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="xpBar"></div>
+      </div>
+      <div class="stats-sub">
+        <span id="xpText">0 XP</span>
+        <span id="dailyGoalText">Sasaran Harian: 0/3</span>
+      </div>
+    </div>
+
+    <!-- Mood Check-In -->
+    <div class="card">
+      <div class="section-title">
+        <span id="moodPrompt">Apa rasa minda anda sekarang?</span>
+      </div>
+      <div class="mood-grid">
+        <button class="mood-btn" onclick="logMood('stress', this)"><span class="emoji">😫</span><span data-i18n="m_stress">Stres</span></button>
+        <button class="mood-btn" onclick="logMood('tired', this)"><span class="emoji">😮‍💨</span><span data-i18n="m_tired">Penat</span></button>
+        <button class="mood-btn" onclick="logMood('okay', this)"><span class="emoji">🙂</span><span data-i18n="m_okay">Biasa</span></button>
+        <button class="mood-btn" onclick="logMood('calm', this)"><span class="emoji">😌</span><span data-i18n="m_calm">Tenang</span></button>
+        <button class="mood-btn" onclick="logMood('fresh', this)"><span class="emoji">✨</span><span data-i18n="m_fresh">Segar</span></button>
+      </div>
+    </div>
+
+    <!-- Hub Games -->
+    <div class="section-title">
+      <span id="hubHeading">Hab Game & Ilmu Santai</span>
+      <span style="font-size:11px; color:var(--muted);" id="noTimerNote">Tiada timer • Ikut rentak anda</span>
+    </div>
+
+    <div class="hub-grid">
+      <div class="game-card" onclick="openGame('breath')">
+        <span class="game-tag tag-free" data-i18n="tag_free">PERCUMA</span>
+        <span class="game-icon">🫁</span>
+        <div>
+          <h3 data-i18n="g1_title">SOS Nafas & Buang Stres</h3>
+          <p data-i18n="g1_desc">Reset 60 saat & mesin hancur fikiran serabut.</p>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="openGame('english')">
+        <span class="game-tag tag-free" data-i18n="tag_free">PERCUMA</span>
+        <span class="game-icon">💼</span>
+        <div>
+          <h3 data-i18n="g2_title">English Pejabat Santai</h3>
+          <p data-i18n="g2_desc">Tukar ayat stres jadi ayat kerja profesional.</p>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="openGame('eq')">
+        <span class="game-tag tag-pro" data-pro-tag>⭐ PRO</span>
+        <span class="game-icon">🧠</span>
+        <div>
+          <h3 data-i18n="g3_title">Psikologi & Kawal Emosi</h3>
+          <p data-i18n="g3_desc">Ilmu EQ & cara tenang hadapi burnout.</p>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="openGame('finance')">
+        <span class="game-tag tag-pro" data-pro-tag>⭐ PRO</span>
+        <span class="game-icon">💰</span>
+        <div>
+          <h3 data-i18n="g4_title">Bijak Gaji & Kewangan</h3>
+          <p data-i18n="g4_desc">Game urus duit agar minda lebih tenang.</p>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="openGame('memory')">
+        <span class="game-tag tag-pro" data-pro-tag>⭐ PRO</span>
+        <span class="game-icon">✨</span>
+        <div>
+          <h3 data-i18n="g5_title">Memori Zen (Reset Otak)</h3>
+          <p data-i18n="g5_desc">Corak cahaya lembut untuk sejukkan minda.</p>
+        </div>
+      </div>
+
+      <div class="game-card" onclick="openGame('rpg')">
+        <span class="game-tag tag-pro" data-pro-tag>⭐ PRO</span>
+        <span class="game-icon">🎭</span>
+        <div>
+          <h3 data-i18n="g6_title">Dilema Kerjaya RPG</h3>
+          <p data-i18n="g6_desc">Simulasi situasi bos & rakan sekerja.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME STAGE VIEW -->
+  <section id="view-game" class="view">
+    <button class="back-btn" onclick="switchTab('home')">← <span data-i18n="btn_back">Kembali ke Hab</span></button>
+    <div id="gameContainer" class="card"></div>
+  </section>
+
+  <!-- SOUND STUDIO VIEW -->
+  <section id="view-sound" class="view">
+    <div class="card">
+      <div class="section-title">
+        <span data-i18n="sound_title">🎧 Studio Bunyi Fokus</span>
+        <button class="icon-btn" onclick="stopAllSounds()" data-i18n="sound_stop">Henti Semua</button>
+      </div>
+      <p style="font-size:12.5px; color:var(--muted); margin-top:0;" data-i18n="sound_sub">
+        Bunyi dijana 100% terus dalam pelayar anda (tanpa kuota internet). Boleh dipasang sambil bermain game.
+      </p>
+
+      <div class="sound-row">
+        <div class="sound-head">
+          <span data-i18n="s_rain">🌧️ Hujan Lembut</span>
+          <span class="game-tag tag-free" style="position:static;" data-i18n="tag_free">PERCUMA</span>
+        </div>
+        <input type="range" id="volRain" min="0" max="100" value="0" oninput="setSoundVol('rain', this.value)" />
+      </div>
+
+      <div class="sound-row">
+        <div class="sound-head">
+          <span data-i18n="s_brown">🌊 Brown Noise (Fokus Dalam)</span>
+          <span class="game-tag tag-free" style="position:static;" data-i18n="tag_free">PERCUMA</span>
+        </div>
+        <input type="range" id="volBrown" min="0" max="100" value="0" oninput="setSoundVol('brown', this.value)" />
+      </div>
+
+      <div class="sound-row">
+        <div class="sound-head">
+          <span data-i18n="s_drone">🧘 Nada Zen 432Hz</span>
+          <span class="game-tag tag-pro" style="position:static;" data-pro-tag>⭐ PRO</span>
+        </div>
+        <input type="range" id="volDrone" min="0" max="100" value="0" oninput="setSoundVol('drone', this.value)" />
+      </div>
+
+      <div class="sound-row">
+        <div class="sound-head">
+          <span data-i18n="s_chime">🎐 Lonceng Angin Lembut</span>
+          <span class="game-tag tag-pro" style="position:static;" data-pro-tag>⭐ PRO</span>
+        </div>
+        <input type="range" id="volChime" min="0" max="100" value="0" oninput="setSoundVol('chime', this.value)" />
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFILE & INSIGHTS VIEW -->
+  <section id="view-profile" class="view">
+    <div class="card">
+      <div class="section-title" data-i18n="theme_title">🎨 Tema Visual Santai</div>
+      <div class="theme-row">
+        <button class="theme-btn active" id="th-midnight" onclick="setTheme('midnight')">Midnight</button>
+        <button class="theme-btn" id="th-matcha" onclick="setTheme('matcha')">Matcha ⭐</button>
+        <button class="theme-btn" id="th-dusk" onclick="setTheme('dusk')">Dusk ⭐</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title" data-i18n="badge_title">🏅 Lencana Pencapaian</div>
+      <div class="badge-grid" id="badgeGrid"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-title" data-i18n="mood_hist_title">📊 Rekod Emosi Terkini</div>
+      <div id="moodHistoryList"></div>
+    </div>
+  </section>
+</div>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
+    <span class="nav-ico">🏠</span>
+    <span data-i18n="nav_home">Hab</span>
+  </button>
+  <button class="nav-btn" id="nav-sound" onclick="switchTab('sound')">
+    <span class="nav-ico">🎧</span>
+    <span data-i18n="nav_sound">Bunyi</span>
+  </button>
+  <button class="nav-btn" id="nav-profile" onclick="switchTab('profile')">
+    <span class="nav-ico">📊</span>
+    <span data-i18n="nav_profile">Rekod</span>
+  </button>
+  <button class="nav-btn" onclick="openProModal()">
+    <span class="nav-ico">⭐</span>
+    <span data-i18n="nav_pro">Pro</span>
+  </button>
+</nav>
+
+<!-- PRO MODAL -->
+<div id="proModal" class="modal-backdrop" onclick="if(event.target===this) closeProModal()">
+  <div class="modal-box">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h2 style="margin:0; font-size:18px; color:var(--warm);">⭐ LegaMinda PRO</h2>
+      <button onclick="closeProModal()" style="background:none; border:none; color:var(--muted); font-size:20px; cursor:pointer;">✕</button>
+    </div>
+    <p style="font-size:13px; color:var(--muted); margin:6px 0 0;" data-i18n="pro_pitch">
+      Harga secawan kopi untuk minda lebih tenang, bijak kawal stres & naik taraf diri setiap hari.
+    </p>
+
+    <ul class="pro-list">
+      <li>✅ <span data-i18n="pro_f1">Buka SEMUA 6 Game & Modul Ilmu (Psikologi EQ, Bijak Gaji, Memori Zen & Dilema Kerjaya RPG)</span></li>
+      <li>✅ <span data-i18n="pro_f2">Akses penuh dek soalan English Pejabat & strategi komunikasi kerja</span></li>
+      <li>✅ <span data-i18n="pro_f3">Studio Bunyi Penuh (Nada Zen 432Hz + Lonceng Angin)</span></li>
+      <li>✅ <span data-i18n="pro_f4">Tema Visual Premium (Matcha Forest & Warm Dusk)</span></li>
+    </ul>
+
+    <div id="proAlreadyActive" style="display:none; background:rgba(52,211,153,0.15); border:1px solid var(--success); padding:12px; border-radius:14px; text-align:center; font-weight:700; color:var(--success); margin-bottom:10px;">
+      🎉 Pelan PRO Anda Sudah Aktif!
+    </div>
+
+    <div id="proUnlockSection">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px;">
+        <button class="btn btn-gold" onclick="openPayment('pay')" data-i18n="btn_pay">💳 Bayar RM19</button>
+        <button class="btn btn-secondary" onclick="openPayment('wa')" data-i18n="btn_wa">💬 WhatsApp</button>
+      </div>
+
+      <label style="display:block; font-size:12px; color:var(--muted); margin-bottom:6px;" data-i18n="code_label">
+        Sudah ada Kod Akses? Masukkan di sini:
+      </label>
+      <input type="text" id="proCodeInput" class="code-input" placeholder="CONTOH: LEGAPRO" />
+      <button class="btn btn-primary" onclick="verifyProCode()" data-i18n="btn_unlock">🔓 Aktifkan Pelan Pro</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   KONFIGURASI PEMILIK APP (UBAH DI SINI SAHAJA)
+   ========================================================= */
+const APP_CONFIG = {
+  // Senarai kod akses sah untuk buka Pelan Pro (huruf besar)
+  PRO_CODES: ['LEGAPRO', 'REHAT2026', 'VIPMINDA'],
+  // Link WhatsApp anda (tukar 60123456789 kepada nombor anda)
+  WHATSAPP_LINK: 'https://wa.me/60123456789?text=Hai%2C%20saya%20ingin%20dapatkan%20Kod%20Akses%20LegaMinda%20PRO%20(RM19)',
+  // Link bayaran ToyyibPay / Billplz / Gumroad anda
+  PAYMENT_LINK: 'https://toyyibpay.com/ganti-link-anda'
+};
+
+/* =========================================================
+   STATE & STORAGE
+   ========================================================= */
+const defaultState = {
+  lang: 'ms',
+  isPro: false,
+  theme: 'midnight',
+  xp: 0,
+  streak: 1,
+  lastActiveDate: new Date().toDateString(),
+  dailyDone: 0,
+  dailyDate: new Date().toDateString(),
+  gamesPlayed: 0,
+  shredsDone: 0,
+  badges: [],
+  moodHistory: []
+};
+
+let state = JSON.parse(localStorage.getItem('legaminda_v1') || 'null') || { ...defaultState };
+
+function saveState() {
+  localStorage.setItem('legaminda_v1', JSON.stringify(state));
+}
+
+function checkDailyStreak() {
+  const today = new Date().toDateString();
+  if (state.dailyDate !== today) {
+    state.dailyDone = 0;
+    state.dailyDate = today;
+  }
+  if (state.lastActiveDate !== today) {
+    const prev = new Date(state.lastActiveDate);
+    const diffDays = Math.round((new Date(today) - prev) / (1000 * 60 * 60 * 24));
+    state.streak = diffDays === 1 ? state.streak + 1 : 1;
+    state.lastActiveDate = today;
+  }
+  saveState();
+}
+
+/* =========================================================
+   I18N (DWIBAHASA BM & EN)
+   ========================================================= */
+const I18N = {
+  ms: {
+    tagline: 'Main Santai, Ilmu Sampai, Stres Hilang',
+    moodPrompt: 'Apa rasa minda anda sekarang?',
+    m_stress: 'Stres', m_tired: 'Penat', m_okay: 'Biasa', m_calm: 'Tenang', m_fresh: 'Segar',
+    hubHeading: 'Hab Game & Ilmu Santai',
+    noTimerNote: 'Tiada timer • Ikut rentak anda',
+    tag_free: 'PERCUMA',
+    g1_title: 'SOS Nafas & Buang Stres', g1_desc: 'Reset 60 saat & mesin hancur fikiran serabut.',
+    g2_title: 'English Pejabat Santai', g2_desc: 'Tukar ayat stres jadi ayat kerja profesional.',
+    g3_title: 'Psikologi & Kawal Emosi', g3_desc: 'Ilmu EQ & cara tenang hadapi burnout.',
+    g4_title: 'Bijak Gaji & Kewangan', g4_desc: 'Game urus duit agar minda lebih tenang.',
+    g5_title: 'Memori Zen (Reset Otak)', g5_desc: 'Corak cahaya lembut untuk sejukkan minda.',
+    g6_title: 'Dilema Kerjaya RPG', g6_desc: 'Simulasi situasi bos & rakan sekerja.',
+    btn_back: 'Kembali ke Hab',
+    sound_title: '🎧 Studio Bunyi Fokus', sound_stop: 'Henti Semua',
+    sound_sub: 'Bunyi dijana 100% terus dalam pelayar anda (tanpa kuota internet). Boleh dipasang sambil bermain game.',
+    s_rain: '🌧️ Hujan Lembut', s_brown: '🌊 Brown Noise (Fokus Dalam)',
+    s_drone: '🧘 Nada Zen 432Hz', s_chime: '🎐 Lonceng Angin Lembut',
+    theme_title: '🎨 Tema Visual Santai', badge_title: '🏅 Lencana Pencapaian', mood_hist_title: '📊 Rekod Emosi Terkini',
+    nav_home: 'Hab', nav_sound: 'Bunyi', nav_profile: 'Rekod', nav_pro: 'Pro',
+    pro_pitch: 'Harga secawan kopi untuk minda lebih tenang, bijak kawal stres & naik taraf diri setiap hari.',
+    pro_f1: 'Buka SEMUA 6 Game & Modul Ilmu (Psikologi EQ, Bijak Gaji, Memori Zen & Dilema Kerjaya RPG)',
+    pro_f2: 'Akses penuh dek soalan English Pejabat & strategi komunikasi kerja',
+    pro_f3: 'Studio Bunyi Penuh (Nada Zen 432Hz + Lonceng Angin)',
+    pro_f4: 'Tema Visual Premium (Matcha Forest & Warm Dusk)',
+    btn_pay: '💳 Bayar RM19', btn_wa: '💬 WhatsApp',
+    code_label: 'Sudah ada Kod Akses? Masukkan di sini:', btn_unlock: '🔓 Aktifkan Pelan Pro',
+    levels: ['Pencari Tenang', 'Pengawal Fokus', 'Minda Seimbang', 'Master Zen', 'Jiwa Merdeka'],
+    goalLabel: 'Sasaran Harian',
+    dayLabel: 'Hari'
+  },
+  en: {
+    tagline: 'Unwind, Learn & Reset Your Mind',
+    moodPrompt: 'How is your mind feeling right now?',
+    m_stress: 'Stressed', m_tired: 'Tired', m_okay: 'Okay', m_calm: 'Calm', m_fresh: 'Fresh',
+    hubHeading: 'Cozy Learning & Reset Hub',
+    noTimerNote: 'No timers • At your own pace',
+    tag_free: 'FREE',
+    g1_title: 'SOS Breath & Stress Shredder', g1_desc: '60-sec calm reset & thought release tool.',
+    g2_title: 'Chill Workplace English', g2_desc: 'Turn stressed thoughts into pro work phrases.',
+    g3_title: 'EQ & Stress Psychology', g3_desc: 'Practical calm frameworks to beat burnout.',
+    g4_title: 'Smart Salary & Money', g4_desc: 'Build financial peace through real scenarios.',
+    g5_title: 'Zen Memory (Brain Reset)', g5_desc: 'Soft glowing pattern play to cool your brain.',
+    g6_title: 'Career Dilemma RPG', g6_desc: 'Navigate boss & coworker scenarios calmly.',
+    btn_back: 'Back to Hub',
+    sound_title: '🎧 Focus Sound Studio', sound_stop: 'Stop All',
+    sound_sub: '100% browser-synthesized ambient audio (offline-ready). Keep it playing while you explore games.',
+    s_rain: '🌧️ Gentle Rain', s_brown: '🌊 Deep Brown Noise',
+    s_drone: '🧘 432Hz Zen Drone', s_chime: '🎐 Soft Wind Chimes',
+    theme_title: '🎨 Calming Visual Themes', badge_title: '🏅 Achievement Badges', mood_hist_title: '📊 Recent Mood Log',
+    nav_home: 'Hub', nav_sound: 'Sounds', nav_profile: 'Log', nav_pro: 'Pro',
+    pro_pitch: 'Less than a cup of coffee for a calmer mind, sharper career skills, and daily stress relief.',
+    pro_f1: 'Unlock ALL 6 Cozy Learning Games (EQ Psychology, Smart Money, Zen Memory & Career RPG)',
+    pro_f2: 'Full deck of Workplace English & calm communication upgrades',
+    pro_f3: 'Full Sound Studio (432Hz Zen Drone + Generative Wind Chimes)',
+    pro_f4: 'Premium Calming Themes (Matcha Forest & Warm Dusk)',
+    btn_pay: '💳 Pay RM19', btn_wa: '💬 WhatsApp',
+    code_label: 'Have an Access Code? Enter it below:', btn_unlock: '🔓 Unlock Pro Plan',
+    levels: ['Calm Seeker', 'Focus Keeper', 'Balanced Mind', 'Zen Master', 'Free Spirit'],
+    goalLabel: 'Daily Goal',
+    dayLabel: 'Days'
+  }
+};
+
+function t(key) {
+  return I18N[state.lang][key] || key;
+}
+
+function applyLang() {
+  document.getElementById('langToggle').textContent = state.lang === 'ms' ? 'EN' : 'BM';
+  document.getElementById('brandTagline').textContent = t('tagline');
+  document.getElementById('moodPrompt').textContent = t('moodPrompt');
+  document.getElementById('hubHeading').textContent = t('hubHeading');
+  document.getElementById('noTimerNote').textContent = t('noTimerNote');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (I18N[state.lang][k]) el.textContent = I18N[state.lang][k];
+  });
+  updateStatsUI();
+  renderBadges();
+  renderMoodHistory();
+}
+
+function toggleLang() {
+  state.lang = state.lang === 'ms' ? 'en' : 'ms';
+  saveState();
+  applyLang();
+  playChime(523.25, 0.12);
+}
+
+/* =========================================================
+   WEB AUDIO API (CHIMES + AMBIENT SOUND STUDIO)
+   ========================================================= */
+let audioCtx = null;
+const activeSounds = {};
+
+function ensureAudio() {
+  if (!audioCtx) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AC();
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playChime(freq = 523.25, dur = 0.25) {
+  try {
+    ensureAudio();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + dur);
+  } catch (e) {}
+}
+
+function createNoiseNode(type) {
+  const bufferSize = audioCtx.sampleRate * 2;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  let lastOut = 0;
+  for (let i = 0; i < bufferSize; i++) {
+    const white = Math.random() * 2 - 1;
+    if (type === 'brown') {
+      data[i] = (lastOut + 0.02 * white) / 1.02;
+      lastOut = data[i];
+      data[i] *= 3.2;
+    } else {
+      data[i] = white * 0.4;
+    }
+  }
+  const src = audioCtx.createBufferSource();
+  src.buffer = buffer;
+  src.loop = true;
+
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.value = type === 'brown' ? 360 : 1200;
+
+  const gain = audioCtx.createGain();
+  gain.gain.value = 0;
+
+  src.connect(filter);
+  filter.connect(gain);
+  gain.connect(audioCtx.destination);
+  src.start();
+  return { src, gain };
+}
+
+function setSoundVol(type, val) {
+  const v = Number(val) / 100;
+  if ((type === 'drone' || type === 'chime') && !state.isPro && v > 0) {
+    document.getElementById(type === 'drone' ? 'volDrone' : 'volChime').value = 0;
+    openProModal();
+    return;
+  }
+  ensureAudio();
+
+  if (type === 'rain' || type === 'brown') {
+    if (!activeSounds[type]) activeSounds[type] = createNoiseNode(type);
+    activeSounds[type].gain.gain.setTargetAtTime(v * 0.28, audioCtx.currentTime, 0.1);
+  } else if (type === 'drone') {
+    if (!activeSounds.drone) {
+      const o1 = audioCtx.createOscillator();
+      const o2 = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o1.type = 'sine'; o1.frequency.value = 216;
+      o2.type = 'sine'; o2.frequency.value = 432;
+      g.gain.value = 0;
+      o1.connect(g); o2.connect(g); g.connect(audioCtx.destination);
+      o1.start(); o2.start();
+      activeSounds.drone = { o1, o2, gain: g };
+    }
+    activeSounds.drone.gain.gain.setTargetAtTime(v * 0.08, audioCtx.currentTime, 0.15);
+  } else if (type === 'chime') {
+    if (activeSounds.chimeTimer) clearInterval(activeSounds.chimeTimer);
+    if (v > 0) {
+      const notes = [523.25, 587.33, 659.25, 783.99, 880.0];
+      activeSounds.chimeTimer = setInterval(() => {
+        const n = notes[Math.floor(Math.random() * notes.length)];
+        playChime(n, 0.9);
+      }, 2800);
+    }
+  }
+}
+
+function stopAllSounds() {
+  ['volRain', 'volBrown', 'volDrone', 'volChime'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = 0;
+  });
+  Object.keys(activeSounds).forEach(k => {
+    if (k === 'chimeTimer') clearInterval(activeSounds[k]);
+    else if (activeSounds[k].gain) activeSounds[k].gain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1);
+  });
+  showToast(state.lang === 'ms' ? 'Semua bunyi dihentikan' : 'All sounds stopped');
+}
+
+/* =========================================================
+   GAMIFICATION, TOAST, NAVIGATION & PRO SYSTEM
+   ========================================================= */
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2600);
+}
+
+function addXP(amount, countDaily = true) {
+  state.xp += amount;
+  if (countDaily) {
+    state.dailyDone += 1;
+    state.gamesPlayed += 1;
+  }
+  checkBadges();
+  saveState();
+  updateStatsUI();
+  playChime(659.25, 0.2);
+}
+
+function updateStatsUI() {
+  const levelIdx = Math.min(4, Math.floor(state.xp / 100));
+  const levelNum = levelIdx + 1;
+  const levelName = t('levels')[levelIdx];
+  const progress = state.xp % 100;
+
+  document.getElementById('levelDisplay').textContent =
+    (state.lang === 'ms' ? `Tahap ${levelNum}` : `Level ${levelNum}`) + ` • ${levelName}`;
+  document.getElementById('streakDisplay').textContent = `🔥 ${state.streak} ${t('dayLabel')}`;
+  document.getElementById('xpBar').style.width = `${progress}%`;
+  document.getElementById('xpText').textContent = `${state.xp} XP`;
+  document.getElementById('dailyGoalText').textContent = `${t('goalLabel')}: ${Math.min(state.dailyDone, 3)}/3`;
+
+  // Pro UI badges
+  document.getElementById('proPill').classList.toggle('active', state.isPro);
+  document.getElementById('headerProBtn').style.display = state.isPro ? 'none' : 'inline-flex';
+  document.getElementById('proAlreadyActive').style.display = state.isPro ? 'block' : 'none';
+  document.getElementById('proUnlockSection').style.display = state.isPro ? 'none' : 'block';
+  document.querySelectorAll('[data-pro-tag]').forEach(el => {
+    el.textContent = state.isPro ? '✓ PRO' : '⭐ PRO';
+    el.className = state.isPro ? 'game-tag tag-free' : 'game-tag tag-pro';
+  });
+}
+
+function switchTab(tab) {
+  if (breathInterval) { clearInterval(breathInterval); breathInterval = null; }
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(`view-${tab}`).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const navBtn = document.getElementById(`nav-${tab}`);
+  if (navBtn) navBtn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function logMood(mood, btn) {
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const map = { stress: '😫', tired: '😮‍💨', okay: '🙂', calm: '😌', fresh: '✨' };
+  const now = new Date();
+  state.moodHistory.unshift({
+    mood,
+    emoji: map[mood],
+    time: now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  });
+  state.moodHistory = state.moodHistory.slice(0, 14);
+  addXP(10, false);
+  renderMoodHistory();
+  showToast(state.lang === 'ms' ? 'Emosi direkod (+10 XP)' : 'Mood logged (+10 XP)');
+}
+
+function setTheme(theme) {
+  if (theme !== 'midnight' && !state.isPro) {
+    openProModal();
+    return;
+  }
+  state.theme = theme;
+  document.body.className = theme === 'midnight' ? '' : `theme-${theme}`;
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`th-${theme}`).classList.add('active');
+  saveState();
+}
+
+function openProModal() {
+  document.getElementById('proModal').classList.add('open');
+}
+
+function closeProModal() {
+  document.getElementById('proModal').classList.remove('open');
+}
+
+function openPayment(type) {
+  const url = type === 'wa' ? APP_CONFIG.WHATSAPP_LINK : APP_CONFIG.PAYMENT_LINK;
+  window.open(url, '_blank');
+}
+
+function verifyProCode() {
+  const input = document.getElementById('proCodeInput').value.trim().toUpperCase();
+  if (APP_CONFIG.PRO_CODES.includes(input)) {
+    state.isPro = true;
+    saveState();
+    updateStatsUI();
+    closeProModal();
+    playChime(880, 0.45);
+    showToast(state.lang === 'ms' ? '🎉 Tahniah! LegaMinda PRO Aktif!' : '🎉 Welcome to LegaMinda PRO!');
+  } else {
+    showToast(state.lang === 'ms' ? 'Kod tidak sah. Cuba lagi.' : 'Invalid code. Please try again.');
+  }
+}
+
+/* =========================================================
+   BADGES & HISTORY
+   ========================================================= */
+const BADGE_DEFS = [
+  { id: 'first_xp', icon: '🌱', ms: 'Langkah Pertama', en: 'First Step', check: s => s.xp >= 20 },
+  { id: 'shredder', icon: '🌬️', ms: 'Bebas Serabut', en: 'Stress Releaser', check: s => s.shredsDone >= 1 },
+  { id: 'goal3', icon: '🔥', ms: 'Konsisten Harian', en: 'Daily Rhythm', check: s => s.dailyDone >= 3 },
+  { id: 'master', icon: '👑', ms: 'Minda Juara (200 XP)', en: 'Calm Champion (200 XP)', check: s => s.xp >= 200 }
+];
+
+function checkBadges() {
+  BADGE_DEFS.forEach(b => {
+    if (!state.badges.includes(b.id) && b.check(state)) {
+      state.badges.push(b.id);
+    }
+  });
+}
+
+function renderBadges() {
+  const grid = document.getElementById('badgeGrid');
+  grid.innerHTML = BADGE_DEFS.map(b => {
+    const ok = state.badges.includes(b.id);
+    return `<div class="badge-item ${ok ? 'unlocked' : ''}">
+      <div style="font-size:22px; margin-bottom:4px;">${b.icon}</div>
+      <div style="font-size:12.5px; font-weight:700;">${state.lang === 'ms' ? b.ms : b.en}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderMoodHistory() {
+  const box = document.getElementById('moodHistoryList');
+  if (!state.moodHistory.length) {
+    box.innerHTML = `<p style="font-size:12.5px; color:var(--muted); margin:0;">${state.lang === 'ms' ? 'Belum ada rekod. Pilih emosi di halaman Hab.' : 'No logs yet. Tap your mood on the Hub screen.'}</p>`;
+    return;
+  }
+  box.innerHTML = state.moodHistory.slice(0, 7).map(m => `
+    <div class="history-item">
+      <span>${m.emoji} <strong>${t('m_' + m.mood)}</strong></span>
+      <span style="color:var(--muted); font-size:11.5px;">${m.time}</span>
+    </div>
+  `).join('');
+}
+
+/* =========================================================
+   GAME CONTENT DATABASES (BILINGUAL)
+   ========================================================= */
+const QUIZ_DATA = {
+  english: [
+    {
+      q_ms: 'Rakan sekerja hantar kerja saat akhir & anda sangat sibuk. Ayat English paling profesional?',
+      q_en: 'A coworker dumps last-minute work when you are swamped. Best calm response?',
+      opts: [
+        { ms: '"I am too busy, do it yourself."', en: '"I am too busy, do it yourself."', ok: false },
+        { ms: '"I\'m currently at capacity. I can look at this tomorrow morning."', en: '"I\'m currently at capacity. I can look at this tomorrow morning."', ok: true },
+        { ms: '"Why always last minute?"', en: '"Why always last minute?"', ok: false }
+      ],
+      tip_ms: '💡 Frasa "at capacity" nampak sangat profesional & menetapkan sempadan tanpa bunyi marah.',
+      tip_en: '💡 "At capacity" sounds composed and sets clear boundaries without sounding defensive.'
+    },
+    {
+      q_ms: 'Bagaimana nak tegur kesilapan dalam emel dengan cara lembut?',
+      q_en: 'How do you point out an error in an email politely?',
+      opts: [
+        { ms: '"You made a mistake in the file."', en: '"You made a mistake in the file."', ok: false },
+        { ms: '"Just flagging a small discrepancy in row 4 for your review."', en: '"Just flagging a small discrepancy in row 4 for your review."', ok: true },
+        { ms: '"Please check properly next time."', en: '"Please check properly next time."', ok: false }
+      ],
+      tip_ms: '💡 "Flagging a small discrepancy" fokus pada isu, bukan menyerang orangnya.',
+      tip_en: '💡 "Flagging a small discrepancy" focuses on the data, not the person.'
+    },
+    {
+      q_ms: 'Anda perlukan masa untuk fikir sebelum setuju dalam mesyuarat. Apa nak cakap?',
+      q_en: 'You need time to think before agreeing in a meeting. What do you say?',
+      opts: [
+        { ms: '"Let me circle back to you after reviewing my timeline."', en: '"Let me circle back to you after reviewing my timeline."', ok: true },
+        { ms: '"I don\'t know lah, wait first."', en: '"I don\'t know, wait first."', ok: false },
+        { ms: '"Confirm cannot."', en: '"Definitely cannot."', ok: false }
+      ],
+      tip_ms: '💡 "Circle back" memberi anda ruang bernafas supaya tidak tergesa-gesa berkata "ya".',
+      tip_en: '💡 "Circle back" buys you calm thinking time so you avoid impulsive yeses.'
+    },
+    {
+      q_ms: 'Nak ingatkan bos/klien yang belum balas emel tanpa nampak mendesak:',
+      q_en: 'Following up on an unanswered email without sounding pushy:',
+      opts: [
+        { ms: '"Why haven\'t you replied?"', en: '"Why haven\'t you replied?"', ok: false },
+        { ms: '"Gentle bump on this whenever you have a moment."', en: '"Gentle bump on this whenever you have a moment."', ok: true },
+        { ms: '"Reply ASAP please."', en: '"Reply ASAP please."', ok: false }
+      ],
+      tip_ms: '💡 "Gentle bump" sangat santai, sopan, dan biasa digunakan dalam korporat moden.',
+      tip_en: '💡 "Gentle bump" is friendly, low-pressure, and widely used in modern teams.'
+    }
+  ],
+  eq: [
+    {
+      q_ms: 'Anda rasa dada sempit sebab terlalu banyak kerja serentak. Prinsip "Circle of Control" sarankan apa?',
+      q_en: 'You feel overwhelmed by tasks. What does the "Circle of Control" suggest?',
+      opts: [
+        { ms: 'Risaukan reaksi semua orang di pejabat.', en: 'Worry about everyone\'s reaction.', ok: false },
+        { ms: 'Pilih 1 tugas kecil yang anda boleh kawal dalam 15 minit ini.', en: 'Pick 1 small task you can control in the next 15 minutes.', ok: true },
+        { ms: 'Buat semua kerja sekali gus tanpa rehat.', en: 'Multitask everything without breaks.', ok: false }
+      ],
+      tip_ms: '💡 Otak menjadi tenang apabila fokus beralih dari "risau" kepada "1 tindakan kecil".',
+      tip_en: '💡 Anxiety drops the moment your brain shifts from worrying to 1 concrete micro-action.'
+    },
+    {
+      q_ms: 'Teknik "5-4-3-2-1 Grounding" digunakan untuk apa ketika panik/stres?',
+      q_en: 'What is the 5-4-3-2-1 Grounding technique used for during work stress?',
+      opts: [
+        { ms: 'Tarik minda kembali ke masa kini guna 5 deria.', en: 'Pull your mind back to the present using 5 senses.', ok: true },
+        { ms: 'Kira baki cuti tahunan.', en: 'Count remaining annual leave.', ok: false },
+        { ms: 'Menghafal senarai kerja esok.', en: 'Memorize tomorrow\'s to-do list.', ok: false }
+      ],
+      tip_ms: '💡 Sebut 5 benda anda nampak & 4 benda anda sentuh — sistem saraf terus bertukar ke mod tenang.',
+      tip_en: '💡 Naming 5 things you see & 4 you can touch signals safety to your nervous system.'
+    },
+    {
+      q_ms: 'Tanda awal "Burnout" yang sering diabaikan pekerja dewasa ialah:',
+      q_en: 'An early sign of workplace burnout often ignored is:',
+      opts: [
+        { ms: 'Rasa sinis, mudah marah pada hal kecil & penat walaupun cukup tidur.', en: 'Cynicism, irritability at tiny things & fatigue even after sleep.', ok: true },
+        { ms: 'Rasa lapar pada waktu tengah hari.', en: 'Feeling hungry at lunchtime.', ok: false },
+        { ms: 'Suka minum kopi pagi.', en: 'Enjoying morning coffee.', ok: false }
+      ],
+      tip_ms: '💡 Burnout bukan sekadar penat badan, tapi keletihan emosi. Rehat mikro 5 minit sangat membantu.',
+      tip_en: '💡 Burnout is emotional exhaustion, not just physical tiredness. Micro-breaks matter.'
+    }
+  ],
+  finance: [
+    {
+      q_ms: 'Lepas hari yang stres, anda rasa nak beli barang online mahal ("stress shopping"). Apa teknik terbaik?',
+      q_en: 'After a stressful day, you want to impulse-buy online. Best calm strategy?',
+      opts: [
+        { ms: 'Checkout terus untuk rasa gembira 5 minit.', en: 'Checkout immediately for a 5-min dopamine hit.', ok: false },
+        { ms: 'Guna "Peraturan 48 Jam": biar dalam troli 2 hari dulu.', en: 'Use the 48-Hour Rule: leave it in cart for 2 days.', ok: true },
+        { ms: 'Guna kad kredit tanpa tengok baki.', en: 'Swipe credit card without checking balance.', ok: false }
+      ],
+      tip_ms: '💡 80% keinginan "stress shopping" akan hilang selepas 48 jam bila emosi kembali stabil.',
+      tip_en: '💡 80% of stress-shopping urges fade after 48 hours once cortisol levels drop.'
+    },
+    {
+      q_ms: 'Berapakah dana kecemasan asas yang paling memberi ketenangan minda kepada pekerja?',
+      q_en: 'What emergency fund target gives working adults the most mental peace?',
+      opts: [
+        { ms: '3 hingga 6 bulan perbelanjaan asas.', en: '3 to 6 months of essential expenses.', ok: true },
+        { ms: '1 minggu duit makan.', en: '1 week of food money.', ok: false },
+        { ms: 'Tiada perlu simpanan.', en: 'No savings needed.', ok: false }
+      ],
+      tip_ms: '💡 Mula kecil: RM100 sebulan ke akaun berasingan sudah cukup untuk bina rasa selamat.',
+      tip_en: '💡 Start small: even RM100/month into a separate account builds real peace of mind.'
+    },
+    {
+      q_ms: 'Dalam formula 50/30/20, apakah maksud 20%?',
+      q_en: 'In the 50/30/20 salary rule, what does 20% represent?',
+      opts: [
+        { ms: 'Simpanan, pelaburan & bayar hutang tambahan.', en: 'Savings, investments & extra debt payoff.', ok: true },
+        { ms: 'Belanja hiburan & kafe.', en: 'Entertainment & cafes.', ok: false },
+        { ms: 'Bil elektrik sahaja.', en: 'Electricity bills only.', ok: false }
+      ],
+      tip_ms: '💡 Bayar diri sendiri (20%) dahulu sebaik gaji masuk supaya tidak bocor di hujung bulan.',
+      tip_en: '💡 Pay yourself first (20%) on payday so it never disappears by month-end.'
+    }
+  ]
+};
+
+const RPG_SCENARIOS = [
+  {
+    ms: 'Jam 9:45 malam. Bos hantar mesej WhatsApp tentang kerja yang sebenarnya boleh tunggu esok pagi. Apa tindakan anda?',
+    en: 'It is 9:45 PM. Your boss texts about a non-urgent task that can wait until tomorrow. What do you do?',
+    choices: [
+      {
+        ms: 'Buka laptop terus & siapkan sampai tengah malam.',
+        en: 'Open laptop immediately and work till midnight.',
+        calm: -15, pro: +5, bound: -20,
+        fb_ms: 'Anda nampak rajin, tapi ini melatih orang lain menjangka anda sentiasa "on-call" 24/7.',
+        fb_en: 'Looks helpful, but trains others to expect 24/7 availability at the cost of your rest.'
+      },
+      {
+        ms: 'Balas ringkas: "Noted bos, saya akan utamakan perkara ini jam 9 pagi esok."',
+        en: 'Reply briefly: "Noted, I\'ll prioritize this first thing at 9 AM tomorrow."',
+        calm: +15, pro: +15, bound: +20,
+        fb_ms: 'Terbaik! Anda responsif, profesional, dan melindungi waktu rehat anda dengan hormat.',
+        fb_en: 'Spot on! Responsive, professional, and protects your evening rest gracefully.'
+      }
+    ]
+  },
+  {
+    ms: 'Dalam mesyuarat, rakan sekerja membentangkan idea anda seolah-olah itu idea dia sendiri. Apa langkah tenang anda?',
+    en: 'In a meeting, a coworker presents your idea as their own. What is your calm move?',
+    choices: [
+      {
+        ms: 'Berdiam diri & simpan dendam sepanjang minggu.',
+        en: 'Stay silent and stay resentful all week.',
+        calm: -15, pro: 0, bound: -15,
+        fb_ms: 'Memendam rasa menaikkan stres. Anda berhak bersuara secara profesional.',
+        fb_en: 'Bottling it up drains energy. You deserve calm visibility.'
+      },
+      {
+        ms: 'Tambah dengan tenang: "Gembira idea yang kita bincang semalam diterima! Saya boleh kongsikan pelan lanjutannya."',
+        en: 'Add calmly: "Glad the idea we discussed yesterday landed well! I can share the next steps I drafted."',
+        calm: +15, pro: +20, bound: +15,
+        fb_ms: 'Sangat bijak! Anda ambil semula kredit tanpa drama atau pertengkaran.',
+        fb_en: 'Brilliant! You reclaim credit gracefully with zero drama.'
+      }
+    ]
+  }
+];
+
+/* =========================================================
+   OPEN & RENDER GAMES
+   ========================================================= */
+let breathInterval = null;
+
+function openGame(type) {
+  const proOnly = ['eq', 'finance', 'memory', 'rpg'];
+  if (proOnly.includes(type) && !state.isPro) {
+    openProModal();
+    return;
+  }
+
+  switchTab('game');
+  if (type === 'breath') renderBreathGame();
+  else if (type === 'english' || type === 'eq' || type === 'finance') renderQuizGame(type, 0);
+  else if (type === 'memory') renderZenMemory();
+  else if (type === 'rpg') renderRPG(0, { calm: 60, pro: 60, bound: 60 });
+}
+
+// 1. SOS Breathing + Thought Shredder
+function renderBreathGame() {
+  const c = document.getElementById('gameContainer');
+  const ms = state.lang === 'ms';
+  c.innerHTML = `
+    <h2 style="margin:0 0 6px; font-size:17px;">🫁 ${t('g1_title')}</h2>
+    <p style="margin:0 0 12px; font-size:12.5px; color:var(--muted);">
+      ${ms ? 'Ikut bulatan perlahan (Tarik 4s • Tahan 4s • Hembus 6s) untuk turunkan degupan stres.' : 'Follow the circle (Inhale 4s • Hold 4s • Exhale 6s) to calm your nervous system.'}
+    </p>
+    <div class="breath-wrap">
+      <div id="breathCircle" class="breath-circle">${ms ? 'Tekan Mula' : 'Tap Start'}</div>
+    </div>
+    <button class="btn btn-primary" id="breathBtn" onclick="toggleBreath()">${ms ? 'Mula Nafas Tenang' : 'Start Calming Breath'}</button>
+
+    <hr style="border:none; border-top:1px solid var(--card-border); margin:20px 0;" />
+
+    <h3 style="margin:0 0 6px; font-size:15px;">🌬️ ${ms ? 'Mesin Hancur Fikiran Serabut' : 'Stress Thought Shredder'}</h3>
+    <p style="margin:0 0 10px; font-size:12px; color:var(--muted);">
+      ${ms ? 'Tulis apa yang buat anda stres hari ini, kemudian lepaskan ia pergi.' : 'Type what is stressing you out today, then watch it dissolve.'}
+    </p>
+    <textarea id="shredText" class="shred-input" placeholder="${ms ? 'Contoh: Kerja bertimbun, penat dengan trafik...' : 'Example: Endless deadlines, exhausting commute...'}"></textarea>
+    <button class="btn btn-secondary" onclick="shredThought()">✨ ${ms ? 'Lepaskan & Hancurkan' : 'Release & Dissolve'}</button>
+  `;
+}
+
+function toggleBreath() {
+  const circle = document.getElementById('breathCircle');
+  const btn = document.getElementById('breathBtn');
+  const ms = state.lang === 'ms';
+  if (breathInterval) {
+    clearInterval(breathInterval);
+    breathInterval = null;
+    circle.className = 'breath-circle';
+    circle.textContent = ms ? 'Selesai ✨' : 'Done ✨';
+    btn.textContent = ms ? 'Mula Nafas Tenang' : 'Start Calming Breath';
+    return;
+  }
+
+  let step = 0;
+  const runStep = () => {
+    if (step === 0) {
+      circle.className = 'breath-circle inhale';
+      circle.textContent = ms ? 'Tarik Nafas...' : 'Inhale...';
+      playChime(396, 0.4);
+      step = 1;
+      breathInterval = setTimeout(runStep, 4000);
+    } else if (step === 1) {
+      circle.className = 'breath-circle hold';
+      circle.textContent = ms ? 'Tahan Sebentar...' : 'Hold Gently...';
+      step = 2;
+      breathInterval = setTimeout(runStep, 4000);
+    } else {
+      circle.className = 'breath-circle exhale';
+      circle.textContent = ms ? 'Hembus Perlahan...' : 'Exhale Slowly...';
+      playChime(528, 0.5);
+      addXP(15, true);
+      step = 0;
+      breathInterval = setTimeout(runStep, 6000);
+    }
+  };
+  btn.textContent = ms ? 'Henti' : 'Stop';
+  runStep();
+}
+
+function shredThought() {
+  const ta = document.getElementById('shredText');
+  if (!ta.value.trim()) return;
+  ta.classList.add('dissolving');
+  playChime(659.25, 0.6);
+  setTimeout(() => {
+    ta.value = '';
+    ta.classList.remove('dissolving');
+    state.shredsDone += 1;
+    addXP(20, true);
+    showToast(state.lang === 'ms' ? 'Fikiran dilepaskan (+20 XP) 🌿' : 'Thought released (+20 XP) 🌿');
+  }, 800);
+}
+
+// 2, 3, 4. Cozy Quiz Modules
+function renderQuizGame(deckKey, idx) {
+  const deck = QUIZ_DATA[deckKey];
+  const c = document.getElementById('gameContainer');
+  const ms = state.lang === 'ms';
+
+  if (idx >= deck.length) {
+    c.innerHTML = `
+      <div style="text-align:center; padding:16px 0;">
+        <div style="font-size:44px; margin-bottom:8px;">🌿</div>
+        <h2 style="margin:0 0 8px;">${ms ? 'Tahniah! Sesi Selesai' : 'Well Done! Session Complete'}</h2>
+        <p style="font-size:13px; color:var(--muted); margin-bottom:18px;">
+          ${ms ? 'Anda baru sahaja melatih minda dengan tenang tanpa tekanan.' : 'You just upgraded your mind calmly with zero pressure.'}
+        </p>
+        <button class="btn btn-primary" onclick="switchTab('home')">${t('btn_back')}</button>
+      </div>
+    `;
+    return;
+  }
+
+  const item = deck[idx];
+  c.innerHTML = `
+    <div class="quiz-meta">
+      <span>${ms ? 'Soalan' : 'Question'} ${idx + 1} / ${deck.length}</span>
+      <span>+20 XP</span>
+    </div>
+    <p class="quiz-question">${ms ? item.q_ms : item.q_en}</p>
+    <div id="optList">
+      ${item.opts.map((o, i) => `
+        <button class="option-btn" onclick="answerQuiz('${deckKey}', ${idx}, ${i}, this)">
+          ${ms ? o.ms : o.en}
+        </button>
+      `).join('')}
+    </div>
+    <div id="insightBox" class="insight-box">${ms ? item.tip_ms : item.tip_en}</div>
+    <button id="nextQuizBtn" class="btn btn-primary" style="display:none;" onclick="renderQuizGame('${deckKey}', ${idx + 1})">
+      ${ms ? 'Seterusnya →' : 'Next →'}
+    </button>
+  `;
+}
+
+function answerQuiz(deckKey, idx, optIdx, btn) {
+  const item = QUIZ_DATA[deckKey][idx];
+  const buttons = document.querySelectorAll('#optList .option-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  if (item.opts[optIdx].ok) {
+    btn.classList.add('correct');
+    addXP(20, true);
+  } else {
+    btn.classList.add('wrong');
+    buttons.forEach((b, i) => { if (item.opts[i].ok) b.classList.add('correct'); });
+    addXP(5, false);
+  }
+  document.getElementById('insightBox').style.display = 'block';
+  document.getElementById('nextQuizBtn').style.display = 'block';
+}
+
+// 5. Zen Memory (Pattern Reset)
+let zenSeq = [], zenUserIdx = 0, zenLocked = true;
+
+function renderZenMemory() {
+  const c = document.getElementById('gameContainer');
+  const ms = state.lang === 'ms';
+  c.innerHTML = `
+    <h2 style="margin:0 0 6px; font-size:17px;">✨ ${t('g5_title')}</h2>
+    <p id="zenStatus" style="margin:0 0 10px; font-size:12.5px; color:var(--muted);">
+      ${ms ? 'Perhatikan cahaya yang menyala, kemudian tekan ikut urutan.' : 'Watch the soft glow, then tap the tiles in order.'}
+    </p>
+    <div class="zen-grid">
+      ${Array.from({ length: 9 }, (_, i) => `<div class="zen-tile" id="zt-${i}" onclick="tapZenTile(${i})"></div>`).join('')}
+    </div>
+    <button class="btn btn-primary" onclick="startZenRound(3)">${ms ? 'Mula Pusingan Santai' : 'Start Calm Round'}</button>
+  `;
+}
+
+function startZenRound(len) {
+  zenSeq = Array.from({ length: len }, () => Math.floor(Math.random() * 9));
+  zenUserIdx = 0;
+  zenLocked = true;
+  const notes = [392, 440, 493.88, 523.25, 587.33, 659.25, 783.99, 880, 987.77];
+
+  zenSeq.forEach((tileIdx, i) => {
+    setTimeout(() => {
+      const el = document.getElementById(`zt-${tileIdx}`);
+      if (!el) return;
+      el.classList.add('lit');
+      playChime(notes[tileIdx], 0.35);
+      setTimeout(() => el.classList.remove('lit'), 480);
+      if (i === zenSeq.length - 1) {
+        setTimeout(() => {
+          zenLocked = false;
+          const st = document.getElementById('zenStatus');
+          if (st) st.textContent = state.lang === 'ms' ? 'Giliran anda! Tekan dengan tenang.' : 'Your turn! Tap calmly.';
+        }, 550);
+      }
+    }, i * 750 + 300);
+  });
+}
+
+function tapZenTile(i) {
+  if (zenLocked) return;
+  const el = document.getElementById(`zt-${i}`);
+  el.classList.add('lit');
+  setTimeout(() => el.classList.remove('lit'), 250);
+  playChime(523.25 + i * 35, 0.25);
+
+  if (i === zenSeq[zenUserIdx]) {
+    zenUserIdx++;
+    if (zenUserIdx === zenSeq.length) {
+      zenLocked = true;
+      addXP(25, true);
+      showToast(state.lang === 'ms' ? 'Fokus mantap! (+25 XP) ✨' : 'Great focus! (+25 XP) ✨');
+      setTimeout(() => startZenRound(Math.min(zenSeq.length + 1, 6)), 1000);
+    }
+  } else {
+    zenLocked = true;
+    showToast(state.lang === 'ms' ? 'Tak apa, cuba lagi dengan santai 🌿' : 'No worries, try again gently 🌿');
+  }
+}
+
+// 6. Career Dilemma RPG
+function renderRPG(idx, stats) {
+  const c = document.getElementById('gameContainer');
+  const ms = state.lang === 'ms';
+
+  if (idx >= RPG_SCENARIOS.length) {
+    c.innerHTML = `
+      <div style="text-align:center; padding:12px 0;">
+        <div style="font-size:40px; margin-bottom:6px;">🎭</div>
+        <h2 style="margin:0 0 8px;">${ms ? 'Simulasi Kerjaya Selesai!' : 'Career Simulation Complete!'}</h2>
+        <div class="meter-row" style="margin:14px 0;">
+          <div class="meter-box">${ms ? 'Tenang' : 'Calm'}<div class="meter-val">${stats.calm}%</div></div>
+          <div class="meter-box">${ms ? 'Profesional' : 'Pro'}<div class="meter-val">${stats.pro}%</div></div>
+          <div class="meter-box">${ms ? 'Sempadan' : 'Boundary'}<div class="meter-val">${stats.bound}%</div></div>
+        </div>
+        <button class="btn btn-primary" onclick="switchTab('home')">${t('btn_back')}</button>
+      </div>
+    `;
+    return;
+  }
+
+  const sc = RPG_SCENARIOS[idx];
+  c.innerHTML = `
+    <div class="meter-row">
+      <div class="meter-box">${ms ? 'Tenang' : 'Calm'}<div class="meter-val">${stats.calm}%</div></div>
+      <div class="meter-box">${ms ? 'Profesional' : 'Pro'}<div class="meter-val">${stats.pro}%</div></div>
+      <div class="meter-box">${ms ? 'Sempadan' : 'Boundary'}<div class="meter-val">${stats.bound}%</div></div>
+    </div>
+    <p class="quiz-question">${ms ? sc.ms : sc.en}</p>
+    <div id="rpgChoices">
+      ${sc.choices.map((ch, i) => `
+        <button class="option-btn" onclick="pickRPG(${idx}, ${i}, ${stats.calm}, ${stats.pro}, ${stats.bound})">
+          ${ms ? ch.ms : ch.en}
+        </button>
+      `).join('')}
+    </div>
+    <div id="rpgFeedback" class="insight-box"></div>
+    <button id="rpgNext" class="btn btn-primary" style="display:none;"></button>
+  `;
+}
+
+function pickRPG(idx, choiceIdx, calm, pro, bound) {
+  const ch = RPG_SCENARIOS[idx].choices[choiceIdx];
+  const nextStats = {
+    calm: Math.max(0, Math.min(100, calm + ch.calm)),
+    pro: Math.max(0, Math.min(100, pro + ch.pro)),
+    bound: Math.max(0, Math.min(100, bound + ch.bound))
+  };
+  document.querySelectorAll('#rpgChoices .option-btn').forEach(b => b.disabled = true);
+  const fb = document.getElementById('rpgFeedback');
+  fb.textContent = '💡 ' + (state.lang === 'ms' ? ch.fb_ms : ch.fb_en);
+  fb.style.display = 'block';
+  addXP(25, true);
+
+  const nextBtn = document.getElementById('rpgNext');
+  nextBtn.textContent = state.lang === 'ms' ? 'Seterusnya →' : 'Continue →';
+  nextBtn.style.display = 'block';
+  nextBtn.onclick = () => renderRPG(idx + 1, nextStats);
+}
+
+/* =========================================================
+   INIT APP
+   ========================================================= */
+checkDailyStreak();
+if (state.theme && state.theme !== 'midnight') {
+  document.body.className = `theme-${state.theme}`;
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  const tb = document.getElementById(`th-${state.theme}`);
+  if (tb) tb.classList.add('active');
+}
+applyLang();
+</script>
+</body>
+</html>
